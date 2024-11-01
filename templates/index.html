@@ -3,31 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Whoami Service</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <title>Whoami Service with Bubbles</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-image: linear-gradient(to right, cyan , indigo);
+            background-image: linear-gradient(to right, rgb(229, 145, 0), rgb(255, 85, 0));
             font-family: 'Arial', sans-serif;
-            color: #fff; /* Text color */
-            margin: 0; /* Remove default margin */
+            color: #fff;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
         }
         .container {
-            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+            background-color: rgba(255, 255, 255, 0.9);
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
             padding: 20px;
             max-width: 400px;
             text-align: center;
+            position: relative; /* Ensures container is above bubbles */
+            z-index: 1; /* Keeps text above bubbles */
         }
         h1 {
             font-size: 24px;
             margin-bottom: 20px;
-            color: #333; /* Darker text color for the header */
+            color: #333;
         }
         pre {
             background-color: #f7f7f7;
@@ -36,7 +40,29 @@
             overflow: auto;
             text-align: left;
             border-radius: 5px;
-            color: #333; /* Dark text color in pre */
+            color: #333;
+        }
+        .bubble {
+            position: absolute;
+            bottom: -50px; /* Start below the viewport */
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: rise 20s infinite;
+            opacity: 0.6;
+        }
+        @keyframes rise {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0.8;
+            }
+            50% {
+                transform: translateY(-50vh) translateX(calc(-30px * var(--random-x)));
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(calc(30px * var(--random-x)));
+                opacity: 0;
+            }
         }
     </style>
 </head>
@@ -45,8 +71,24 @@
         <h1>Pretty Whoami</h1>
         <pre>{{ data }}</pre>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+
+    <!-- Create multiple bubbles for the background -->
+    <div class="bubble" style="width: 50px; height: 50px; left: 10%; --random-x: 1; animation-delay: 0s;"></div>
+    <div class="bubble" style="width: 40px; height: 40px; left: 30%; --random-x: -1; animation-delay: 2s;"></div>
+    <div class="bubble" style="width: 30px; height: 30px; left: 50%; --random-x: 1; animation-delay: 4s;"></div>
+    <div class="bubble" style="width: 60px; height: 60px; left: 70%; --random-x: -1; animation-delay: 1s;"></div>
+    <div class="bubble" style="width: 35px; height: 35px; left: 20%; --random-x: 1; animation-delay: 3s;"></div>
+    <div class="bubble" style="width: 45px; height: 45px; left: 80%; --random-x: -1; animation-delay: 5s;"></div>
+    <div class="bubble" style="width: 55px; height: 55px; left: 15%; --random-x: 1; animation-delay: 6s;"></div>
+    <div class="bubble" style="width: 65px; height: 65px; left: 25%; --random-x: -1; animation-delay: 7s;"></div>
+    <div class="bubble" style="width: 70px; height: 70px; left: 35%; --random-x: 1; animation-delay: 8s;"></div>
+    <div class="bubble" style="width: 40px; height: 40px; left: 45%; --random-x: -1; animation-delay: 9s;"></div>
+    <div class="bubble" style="width: 30px; height: 30px; left: 55%; --random-x: 1; animation-delay: 10s;"></div>
+    <div class="bubble" style="width: 50px; height: 50px; left: 65%; --random-x: -1; animation-delay: 11s;"></div>
+    <div class="bubble" style="width: 45px; height: 45px; left: 75%; --random-x: 1; animation-delay: 12s;"></div>
+    <div class="bubble" style="width: 60px; height: 60px; left: 85%; --random-x: -1; animation-delay: 13s;"></div>
+    <div class="bubble" style="width: 55px; height: 55px; left: 5%; --random-x: 1; animation-delay: 14s;"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
