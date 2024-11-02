@@ -33,7 +33,7 @@ jobs:
       id: check_version
       run: |
         VERSION=$(python -c "from version import __version__; print(__version__.strip('v'))")
-        if docker pull your_docker_image:$(echo $VERSION); then
+        if docker pull ogechibogu/pretty-whoami:$(echo $VERSION); then
           echo "Version $VERSION already exists in Docker."
           exit 1
         fi
