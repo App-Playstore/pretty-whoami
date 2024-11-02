@@ -1,4 +1,4 @@
-name: Test App
+name: Pretty-Whoami
 
 on:
   pull_request:
@@ -36,6 +36,8 @@ jobs:
         if docker pull ogechibogu/pretty-whoami:$(echo $VERSION); then
           echo "Version $VERSION already exists in Docker. Update version.py"
           exit 1
+        else
+          echo "Version $VERSION not in Docker. Proceed with build.."
         fi
 
   build_and_release:
