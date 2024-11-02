@@ -4,12 +4,8 @@ import requests
 
 app = Flask(__name__)
 
-parser = argparse.ArgumentParser()
-parser.add_argument('--whoami_url', type=str, required=True, help='URL of the whoami service')
-args = parser.parse_args()
 
-WHOAMI_SERVICE_URL = args.whoami_url
-
+WHOAMI_SERVICE_URL = "https://httpbin.org/get"
 
 @app.route('/')
 def index():
@@ -17,4 +13,9 @@ def index():
     return render_template('index.html', data=response.text)
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--whoami_url', type=str, required=True, help='URL of the whoami service')
+    args = parser.parse_args()
+    
+    WHOAMI_SERVICE_URL = args.whoami_url
     app.run(debug=True, host='0.0.0.0', port=80)
