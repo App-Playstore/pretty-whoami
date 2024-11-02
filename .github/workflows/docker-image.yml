@@ -1,0 +1,78 @@
+name: Test App
+
+on:
+  pull_request:
+    branches: [ "main" ]
+  push:
+    branches: [ "main" ]
+
+jobs:
+
+  test:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.19'
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run tests
+      run: |
+        pytest
+
+    - name: Check App Version
+      id: check_version
+      run: |
+        VERSION=$(python -c "from version import __version__; print(__version__.strip('v'))")
+        if docker pull your_docker_image:$(echo $VERSION); then
+          echo "Version $VERSION already exists in Docker."
+          exit 1
+        fi
+
+  build_and_release:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Log in to Docker Hub
+      run: |
+        echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+    - name: Build Docker Image
+      run: |
+        VERSION=$(python -c "from version import __version__; print(__version__.strip('v'))")
+        docker build -t ogechibogu/pretty-whoami:$VERSION -t ogechibogu/pretty-whoami:latest --platform linux/amd64 .
+
+    - name: Push Docker Image
+      run: |
+        VERSION=$(python -c "from version import __version__; print(__version__.strip('v'))")
+        docker push ogechibogu/pretty-whoami:$VERSION
+        docker push ogechibogu/pretty-whoami:latest
+
+    - name: Get Version for Release
+      id: get_version
+      run: |
+        VERSION=$(python -c "from version import __version__; print(__version__.strip('v'))")
+        echo "::set-output name=version::$VERSION"
+
+    - name: Create Release
+      id: create_release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ steps.get_version.outputs.version }}
+        release_name: Release ${{ steps.get_version.outputs.version }}
+        body: |
+          Changes in this release...
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
