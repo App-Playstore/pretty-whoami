@@ -34,7 +34,7 @@ jobs:
       run: |
         VERSION=$(python -c "from version import __version__; print(__version__)")
         if docker pull ogechibogu/pretty-whoami:$(echo $VERSION); then
-          echo "Version $VERSION already exists in Docker."
+          echo "Version $VERSION already exists in Docker. Update version.py"
           exit 1
         fi
 
