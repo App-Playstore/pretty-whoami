@@ -11,6 +11,7 @@ jobs:
   test:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+    name: Python test
 
     steps:
     - uses: actions/checkout@v4
@@ -43,6 +44,7 @@ jobs:
   build_and_release:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    name: Build and Release
 
     steps:
     - uses: actions/checkout@v4
