@@ -20,7 +20,7 @@ The app requires a command-line argument specifying the URL of the whoami servic
 Run the container and provide the `--whoami_url` argument:
 
 ```bash
-docker run -p 80:80 your-docker-image-name --whoami_url=http://host.docker.internal:8080
+docker run -p 80:80 ogechibogu/pretty-whoami --whoami_url=http://host.docker.internal:8080
 ```
 
 Replace `http://host.docker.internal:8080` with the actual URL of your whoami service. If the service is running in a Docker container, use `host.docker.internal` to reference your host machine.
@@ -30,7 +30,7 @@ Replace `http://host.docker.internal:8080` with the actual URL of your whoami se
 To use the Traefik whoami service:
 
 ```bash
-docker run -p 80:80 your-docker-image-name --whoami_url=http://host.docker.internal:30008
+docker run -p 80:80 ogechibogu/pretty-whoami --whoami_url=http://host.docker.internal:30008
 ```
 
 This command assumes that the Traefik whoami service is running on port `30008` on your host machine.
