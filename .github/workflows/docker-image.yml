@@ -1,4 +1,4 @@
-name: Test App
+name: Pretty-Whoami
 
 on:
   pull_request:
@@ -18,7 +18,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.19'
+        python-version: '3.12'
 
     - name: Install Dependencies
       run: |
@@ -32,10 +32,12 @@ jobs:
     - name: Check App Version
       id: check_version
       run: |
-        VERSION=$(python -c "from version import __version__; print(__version__.strip('v'))")
-        if docker pull your_docker_image:$(echo $VERSION); then
-          echo "Version $VERSION already exists in Docker."
+        VERSION=$(python -c "from version import __version__; print(__version__)")
+        if docker pull ogechibogu/pretty-whoami:$(echo $VERSION); then
+          echo "Version $VERSION already exists in Docker. Update version.py"
           exit 1
+        else
+          echo "Version $VERSION not in Docker. Proceed with build.."
         fi
 
   build_and_release:
@@ -51,19 +53,19 @@ jobs:
 
     - name: Build Docker Image
       run: |
-        VERSION=$(python -c "from version import __version__; print(__version__.strip('v'))")
+        VERSION=$(python -c "from version import __version__; print(__version__)")
         docker build -t ogechibogu/pretty-whoami:$VERSION -t ogechibogu/pretty-whoami:latest --platform linux/amd64 .
 
     - name: Push Docker Image
       run: |
-        VERSION=$(python -c "from version import __version__; print(__version__.strip('v'))")
+        VERSION=$(python -c "from version import __version__; print(__version__)")
         docker push ogechibogu/pretty-whoami:$VERSION
         docker push ogechibogu/pretty-whoami:latest
 
     - name: Get Version for Release
       id: get_version
       run: |
-        VERSION=$(python -c "from version import __version__; print(__version__.strip('v'))")
+        VERSION=$(python -c "from version import __version__; print(__version__)")
         echo "::set-output name=version::$VERSION"
 
     - name: Create Release
