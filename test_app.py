@@ -1,6 +1,7 @@
 import pytest
 from app import app
 import requests_mock
+from bs4 import BeautifulSoup
 
 @pytest.fixture
 def client():
@@ -14,7 +15,11 @@ def test_index(client, requests_mock):
     response = client.get('/')
     
     assert response.status_code == 200
-    assert b'Test Response' in response.data
+    
+    soup = BeautifulSoup(response.data, "html.parser")
+    
+    assert "Test Response" in soup.get_text()
+
 
 
 
